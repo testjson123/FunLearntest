@@ -2,7 +2,7 @@
 const IMG_SIZE = 80;
 const INTERVAL = 500;
 _init_();
-
+var flip = false;
 async function _init_() {
   //--Load model
   const model = await tf.loadLayersModel(
@@ -14,7 +14,9 @@ async function _init_() {
   const webcamElement = document.getElementById("webcam");
   const canvasElement = document.getElementById("canvas");
   const snapSoundElement = document.getElementById("snapSound");
-  const webcam = new Webcam(
+  const flip = document.getElementById("btn-flip");
+  console.log(flip);
+  let webcam = new Webcam(
     webcamElement,
     "user",
     canvasElement,
@@ -74,22 +76,19 @@ function showResult(arr) {
   return [maxIndex, CLASS_NAMES[maxIndex], max.toFixed(2)];
 }
 
-function cameraFlip() {
-  const webcamElement = document.getElementById("webcam");
-  const canvasElement = document.getElementById("canvas");
-  const snapSoundElement = document.getElementById("snapSound");
-  const webcam = new Webcam(
-    webcamElement,
-    "enviroment",
-    canvasElement,
-    snapSoundElement
-  );
-  webcam
-    .start()
-    .then((result) => {
-      console.log("webcam started");
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+function cameraFlip(webcam, webcamElement, canvasElement, snapSoundElement) {
+  // webcam = new Webcam(
+  //   webcamElement,
+  //   "enviroment",
+  //   canvasElement,
+  //   snapSoundElement
+  // );
+  // webcam
+  //   .start()
+  //   .then((result) => {
+  //     console.log("webcam started");
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //   });
 }
