@@ -73,3 +73,23 @@ function showResult(arr) {
   }
   return [maxIndex, CLASS_NAMES[maxIndex], max.toFixed(2)];
 }
+
+function cameraFlip() {
+  const webcamElement = document.getElementById("webcam");
+  const canvasElement = document.getElementById("canvas");
+  const snapSoundElement = document.getElementById("snapSound");
+  const webcam = new Webcam(
+    webcamElement,
+    "enviroment",
+    canvasElement,
+    snapSoundElement
+  );
+  webcam
+    .start()
+    .then((result) => {
+      console.log("webcam started");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
