@@ -1,8 +1,15 @@
 ////////////////
 const IMG_SIZE = 80;
 const INTERVAL = 500;
-_init_();
-var flip = false;
+
+//--Webcam
+const webcamElement = document.getElementById("webcam");
+const canvasElement = document.getElementById("canvas");
+const snapSoundElement = document.getElementById("snapSound");
+const flip = document.getElementById("btn-flip");
+
+let webcam = new Webcam(webcamElement, "user", canvasElement, snapSoundElement);
+
 async function _init_() {
   //--Load model
   const model = await tf.loadLayersModel(
@@ -10,18 +17,8 @@ async function _init_() {
   );
   console.log("model loaded");
 
-  //--Webcam
-  const webcamElement = document.getElementById("webcam");
-  const canvasElement = document.getElementById("canvas");
-  const snapSoundElement = document.getElementById("snapSound");
-  const flip = document.getElementById("btn-flip");
-  console.log(flip);
-  let webcam = new Webcam(
-    webcamElement,
-    "user",
-    canvasElement,
-    snapSoundElement
-  );
+  //console.log(flip);
+
   webcam
     .start()
     .then((result) => {
@@ -56,6 +53,8 @@ function predict(model, image) {
   return showResult(result);
 }
 
+_init_();
+
 /**
  * Get highest probability
  * return max index, class name and probability value
@@ -76,19 +75,18 @@ function showResult(arr) {
   return [maxIndex, CLASS_NAMES[maxIndex], max.toFixed(2)];
 }
 
-function cameraFlip(webcam, webcamElement, canvasElement, snapSoundElement) {
-  // webcam = new Webcam(
-  //   webcamElement,
-  //   "enviroment",
-  //   canvasElement,
-  //   snapSoundElement
-  // );
-  // webcam
-  //   .start()
-  //   .then((result) => {
-  //     console.log("webcam started");
-  //   })
-  //   .catch((err) => {
-  //     console.log(err);
-  //   });
+/* Get all video input devices info */
+function getVideoInputs() {
+  // let webcamList = [];
+  // mediaDevices.forEach((mediaDevice) => {
+  //   if (mediaDevice.kind === "videoinput") {
+  //     webcamList.push(mediaDevice);
+  //   }
+  // });
+  // if (webcamList.length == 1) {
+  //   facingMode = "user";
+  // }
+  // return webcamList;
+  let test = (webcam.facingMode = "environment");
+  console.log(test);
 }
