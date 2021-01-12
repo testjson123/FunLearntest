@@ -8,7 +8,7 @@ const canvasElement = document.getElementById("canvas");
 const snapSoundElement = document.getElementById("snapSound");
 const flip = document.getElementById("btn-flip");
 
-let facingMode = "user";
+let facingMode = "enviroment";
 let webcam = new Webcam(
   webcamElement,
   facingMode,
