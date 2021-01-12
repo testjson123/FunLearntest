@@ -87,6 +87,6 @@ function getVideoInputs() {
   //   facingMode = "user";
   // }
   // return webcamList;
-  let test = (webcam.facingMode = "environment");
-  console.log(test);
+  webcam.facingMode = webcam.facingMode == "user" ? "enviroment" : "user";
+  webcamElement.style.transform = "";
 }
