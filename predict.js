@@ -8,12 +8,21 @@ const canvasElement = document.getElementById("canvas");
 const snapSoundElement = document.getElementById("snapSound");
 const flip = document.getElementById("btn-flip");
 
+let facingMode = "user";
 let webcam = new Webcam(
   webcamElement,
-  "enviroment",
+  facingMode,
   canvasElement,
   snapSoundElement
 );
+webcam
+  .start()
+  .then((result) => {
+    console.log("webcam started");
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
 async function _init_() {
   //--Load model
@@ -24,21 +33,13 @@ async function _init_() {
 
   //console.log(flip);
 
-  webcam
-    .start()
-    .then((result) => {
-      console.log("webcam started");
-    })
-    .catch((err) => {
-      console.log(err);
-    });
   //----------------------------------------
 
   //--Webcam loop and predict
   webcamElement.addEventListener("play", () => {
     setInterval(async () => {
-      const res = predict(model, webcamElement);
-      document.getElementById("label").innerText = `${res[2] * 100}% ${res[1]}`;
+      //const res = predict(model, webcamElement);
+      //document.getElementById("label").innerText = `${res[2] * 100}% ${res[1]}`;
     }, INTERVAL);
   });
 }
@@ -92,6 +93,23 @@ function getVideoInputs() {
   //   facingMode = "user";
   // }
   // return webcamList;
-  webcam.facingMode = webcam.facingMode == "user" ? "enviroment" : "user";
-  webcamElement.style.transform = "";
+  console.log(webcam.webcamList[0]);
+  console.log(webcam.facingMode);
+  webcam.facingMode == "user"
+    ? (facingMode = "enviroment")
+    : (facingMode = "user");
+  webcam = new Webcam(
+    webcamElement,
+    facingMode,
+    canvasElement,
+    snapSoundElement
+  );
+  webcam
+    .start()
+    .then((result) => {
+      console.log("webcam started");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 }
