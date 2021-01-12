@@ -2,27 +2,18 @@
 const IMG_SIZE = 80;
 const INTERVAL = 500;
 
-//--Webcam
 const webcamElement = document.getElementById("webcam");
 const canvasElement = document.getElementById("canvas");
 const snapSoundElement = document.getElementById("snapSound");
 const flip = document.getElementById("btn-flip");
-
-let facingMode = "enviroment";
-let webcam = new Webcam(
+let facingMode = "user";
+let webcam = start_webcam(
   webcamElement,
-  facingMode,
   canvasElement,
-  snapSoundElement
+  snapSoundElement,
+  facingMode
 );
-webcam
-  .start()
-  .then((result) => {
-    console.log("webcam started");
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+_init_();
 
 async function _init_() {
   //--Load model
@@ -30,9 +21,6 @@ async function _init_() {
     "https://raw.githubusercontent.com/testjson123/tfjs/master/saved%20models/animals/model.json"
   );
   console.log("model loaded");
-
-  //console.log(flip);
-
   //----------------------------------------
 
   //--Webcam loop and predict
@@ -40,6 +28,7 @@ async function _init_() {
     setInterval(async () => {
       //const res = predict(model, webcamElement);
       //document.getElementById("label").innerText = `${res[2] * 100}% ${res[1]}`;
+      console.log(webcam.facingMode);
     }, INTERVAL);
   });
 }
@@ -59,7 +48,28 @@ function predict(model, image) {
   return showResult(result);
 }
 
-_init_();
+function start_webcam(
+  webcamElement,
+  canvasElement,
+  snapSoundElement,
+  facingMode
+) {
+  let webcam = new Webcam(
+    webcamElement,
+    facingMode,
+    canvasElement,
+    snapSoundElement
+  );
+  webcam
+    .start()
+    .then((result) => {
+      console.log("webcam started");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  return webcam;
+}
 
 /**
  * Get highest probability
@@ -93,23 +103,17 @@ function getVideoInputs() {
   //   facingMode = "user";
   // }
   // return webcamList;
+  // webcam.stop();
   console.log(webcam.webcamList[0]);
   console.log(webcam.facingMode);
   webcam.facingMode == "user"
     ? (facingMode = "enviroment")
     : (facingMode = "user");
-  webcam = new Webcam(
+
+  webcam = start_webcam(
     webcamElement,
-    facingMode,
     canvasElement,
-    snapSoundElement
+    snapSoundElement,
+    facingMode
   );
-  webcam
-    .start()
-    .then((result) => {
-      console.log("webcam started");
-    })
-    .catch((err) => {
-      console.log(err);
-    });
 }
