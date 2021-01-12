@@ -8,7 +8,12 @@ const canvasElement = document.getElementById("canvas");
 const snapSoundElement = document.getElementById("snapSound");
 const flip = document.getElementById("btn-flip");
 
-let webcam = new Webcam(webcamElement, "user", canvasElement, snapSoundElement);
+let webcam = new Webcam(
+  webcamElement,
+  "enviroment",
+  canvasElement,
+  snapSoundElement
+);
 
 async function _init_() {
   //--Load model
