@@ -14,9 +14,18 @@ body {
 
 #webcam {
   padding: 10px;
-  background-color: white;
+  background-color: rgba(105, 100, 100, 0.63);
   margin-left: auto;
   margin-right: auto;
+}
+
+.webcam-front {
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+}
+.webcam-rear {
+  -webkit-transform: scaleX(1);
+  transform: scaleX(1);
 }
 
 #canvas {

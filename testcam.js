@@ -11,6 +11,11 @@ let constraints = {
 };
 
 let videoStream;
+let canvas = document.getElementById("canvas");
+let ctx = canvas.getContext('2d');
+let video = document.getElementById("webcam");
+ctx.translate(video.videoWidth, 0);
+canvas = canvas.scale = (-1, 1);
 init();
 
 async function init() {
@@ -26,9 +31,14 @@ function getVideoInputs() {
   videoStream.getTracks().forEach((track) => {
     track.stop();
   });
-  constraints.video.facingMode == "user"
-    ? (constraints.video.facingMode = "environment")
-    : constraints.video.facingMode = "user";
+  if (constraints.video.facingMode == "user") {
+    constraints.video.facingMode = "environment";
+    document.getElementById("webcam").className = "webcam-rear";
+  }
+  else {
+    constraints.video.facingMode = "user";
+    document.getElementById("webcam").className = "webcam-front";
+  }
   init();
 }
 
