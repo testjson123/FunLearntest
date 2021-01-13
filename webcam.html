@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Predict Animals</title>
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js"> </script>
-  <script type="text/javascript" src="https://unpkg.com/webcam-easy/dist/webcam-easy.min.js"></script>
+  <!-- <script type="text/javascript" src="https://unpkg.com/webcam-easy/dist/webcam-easy.min.js"></script> -->
   <link rel="stylesheet" href="webcam.css">
 </head>
 
@@ -15,14 +15,12 @@
     <h1 id='label'></h1>
     <!--Wecam-->
 
-    <!-- <video id="webcam" autoplay playsinline width="640" height="400">   </video> -->
     <video id="webcam" autoplay playsinline width="640" height="400" class="webcam-front"></video>
-
 
     <canvas id="canvas" class="d-none"></canvas>
     <!-- <audio id="snapSound" src="audio/snap.wav" preload="auto"></audio> -->
     <br><br>
-    <button id='btn-flip' onclick="getVideoInputs()">Flip Camera 2</button>
+    <button id='btn-flip' onclick="flip()">Flip Camera 2</button>
     <button id='btn-flip' onclick="getvideomode()">test</button>
     <br><br>
     <button id='btn-close' onclick="window.location.href='index.html'">Stop</button>

@@ -21,13 +21,15 @@ init();
 async function init() {
   if ("mediaDevices" in navigator && "getUserMedia" in navigator.mediaDevices) {
     videoStream = await navigator.mediaDevices.getUserMedia(constraints);
+    if (videoStream.getVideoTracks().length > 1) {
+      flip();
+    }
     let video = document.querySelector("#webcam");
-    //videoStream = await navigator.mediaDevices.getUserMedia(constraints);
     video.srcObject = videoStream;
   }
 }
 
-function getVideoInputs() {
+function flip() {
   videoStream.getTracks().forEach((track) => {
     track.stop();
   });
