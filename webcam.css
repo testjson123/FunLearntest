@@ -45,3 +45,13 @@ body {
   height: 35px;
   font-size: 16px;
 }
+
+#btnScreenshot {
+  width: 120px;
+  height: 35px;
+  font-size: 16px;
+}
+
+.hide {
+  display: none;
+}

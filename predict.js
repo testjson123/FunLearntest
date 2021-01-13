@@ -1,6 +1,18 @@
+//--Decide which camera to start depends on screen size (rear for mobile, front for pc)
+let facing = "";
+let classFacing = "";
+if (window.screen.height / window.screen.width > 1.4) {
+  facing = "environment";
+  classFacing = "webcam-rear";
+}
+else {
+  facing = "user";
+  classFacing = "webcam-front";
+}
+
 let constraints = {
   video: {
-    facingMode: "environment",
+    facingMode: facing,
     width: {
       ideal: 640,
     },
@@ -10,22 +22,27 @@ let constraints = {
   },
 };
 
-
+//-----------------------------------------
 const IMG_SIZE = 80;
 const INTERVAL = 500;
-////////////////--------------------------------------
+
 
 let videoStream;
 let canvas = document.getElementById("canvas");
 let video = document.getElementById("webcam");
 const snapSoundElement = document.getElementById("snapSound");
 let videoStarted = false;
+const btnScreenshot = document.querySelector("#btnScreenshot")
+const screenshotsContainer = document.querySelector("#screenshots");
 
 start_cam();
 setTimeout(function () { _init_(); }, 800);
 
 
 async function _init_() {
+  console.log(window.screen.height / window.screen.width);
+
+
   //--Load model
   const model = await tf.loadLayersModel(
     "https://raw.githubusercontent.com/testjson123/FunLearntest/main/model/savedModels/tfjs/animals/model.json"
@@ -44,6 +61,7 @@ async function start_cam() {
   if ("mediaDevices" in navigator && "getUserMedia" in navigator.mediaDevices) {
     videoStream = await navigator.mediaDevices.getUserMedia(constraints);
     let video = document.querySelector("#webcam");
+    document.getElementById("webcam").className = classFacing;
     video.srcObject = videoStream;
   }
 }
@@ -55,11 +73,11 @@ function flip() {
   });
   if (constraints.video.facingMode == "user") {
     constraints.video.facingMode = "environment";
-    document.getElementById("webcam").className = "webcam-rear";
+    classFacing = "webcam-rear";
   }
   else {
     constraints.video.facingMode = "user";
-    document.getElementById("webcam").className = "webcam-front";
+    classFacing = "webcam-front";
   }
   start_cam();
 
@@ -109,6 +127,15 @@ function showResult(arr) {
 
 
 
+
+// btnScreenshot.addEventListener("click", function () {
+//   const img = document.createElement("img");
+//   canvas.width = video.videoWidth;
+//   canvas.height = video.videoHeight;
+//   canvas.getContext("2d").drawImage(video, 0, 0);
+//   img.src = canvas.toDataURL("image/png");
+//   screenshotsContainer.prepend(img);
+// });
 
 
 
