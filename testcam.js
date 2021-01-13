@@ -12,17 +12,17 @@ let constraints = {
 
 let videoStream;
 let canvas = document.getElementById("canvas");
-let ctx = canvas.getContext('2d');
 let video = document.getElementById("webcam");
-ctx.translate(video.videoWidth, 0);
-canvas = canvas.scale = (-1, 1);
+
 init();
 
 async function init() {
   if ("mediaDevices" in navigator && "getUserMedia" in navigator.mediaDevices) {
     videoStream = await navigator.mediaDevices.getUserMedia(constraints);
     if (videoStream.getVideoTracks().length > 1) {
-      flip();
+      document.getElementById("label").innerText = videoStream.getVideoTracks().length;
+      constraints.video.facingMode = "environment";
+      document.getElementById("webcam").className = "webcam-rear";
     }
     let video = document.querySelector("#webcam");
     video.srcObject = videoStream;
