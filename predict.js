@@ -40,9 +40,6 @@ setTimeout(function () { _init_(); }, 800);
 
 
 async function _init_() {
-  console.log(window.screen.height / window.screen.width);
-
-
   //--Load model
   const model = await tf.loadLayersModel(
     "https://raw.githubusercontent.com/testjson123/FunLearntest/main/model/savedModels/tfjs/animals/model.json"
