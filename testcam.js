@@ -16,7 +16,7 @@ init();
 async function init() {
   if ("mediaDevices" in navigator && "getUserMedia" in navigator.mediaDevices) {
     videoStream = await navigator.mediaDevices.getUserMedia(constraints);
-    let video = document.querySelector("webcam");
+    let video = document.querySelector("#webcam");
     //videoStream = await navigator.mediaDevices.getUserMedia(constraints);
     video.srcObject = videoStream;
   }
