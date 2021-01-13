@@ -54,6 +54,7 @@ function start_webcam(
   snapSoundElement,
   facingMode
 ) {
+  console.log(`${facingMode} here`);
   let webcam = new Webcam(
     webcamElement,
     facingMode,
@@ -104,16 +105,18 @@ function getVideoInputs() {
   // }
   // return webcamList;
   // webcam.stop();
-  console.log(webcam.webcamList[0]);
-  console.log(webcam.facingMode);
-  webcam.facingMode == "user"
-    ? (facingMode = "enviroment")
-    : (facingMode = "user");
 
-  webcam = start_webcam(
-    webcamElement,
-    canvasElement,
-    snapSoundElement,
-    facingMode
-  );
+  // console.log(webcam.selectedDeviceId);
+  // console.log(webcam.facingMode);
+  // webcam.facingMode == "user"
+  //   ? (facingMode = "enviroment")
+  //   : (facingMode = "user");
+
+  // webcam = start_webcam(
+  //   webcamElement,
+  //   canvasElement,
+  //   snapSoundElement,
+  //   facingMode
+  // );
+  webcam.flip();
 }
