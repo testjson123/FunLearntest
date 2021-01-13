@@ -19,8 +19,9 @@ init();
 async function init() {
   if ("mediaDevices" in navigator && "getUserMedia" in navigator.mediaDevices) {
     videoStream = await navigator.mediaDevices.getUserMedia(constraints);
+    document.getElementById("label").innerText = videoStream.getVideoTracks().length;
     if (videoStream.getVideoTracks().length > 1) {
-      document.getElementById("label").innerText = videoStream.getVideoTracks().length;
+      //document.getElementById("label").innerText = videoStream.getVideoTracks().length;
       constraints.video.facingMode = "environment";
       document.getElementById("webcam").className = "webcam-rear";
     }
