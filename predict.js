@@ -19,11 +19,13 @@ let videoStream;
 let canvas = document.getElementById("canvas");
 let video = document.getElementById("webcam");
 const snapSoundElement = document.getElementById("snapSound");
+let videoStarted = false;
 
-init();
+start_cam();
+setTimeout(function () { _init_(); }, 800);
 
 
-async function init() {
+async function _init_() {
   //--Load model
   const model = await tf.loadLayersModel(
     "https://raw.githubusercontent.com/testjson123/FunLearntest/main/model/savedModels/tfjs/animals/model.json"
@@ -31,22 +33,20 @@ async function init() {
   console.log("model loaded");
   //----------------------------------------
 
-  //--Initialize Webcam
+  //--Webcam loop and predict
+  if (!videoStarted) {
+    video.addEventListener("play", callToPredict(model));
+  }
+}
+
+
+async function start_cam() {
   if ("mediaDevices" in navigator && "getUserMedia" in navigator.mediaDevices) {
     videoStream = await navigator.mediaDevices.getUserMedia(constraints);
     let video = document.querySelector("#webcam");
     video.srcObject = videoStream;
   }
-
-  //--Webcam loop and predict
-  video.addEventListener("play", () => {
-    setInterval(async () => {
-      const res = predict(model, video);
-      document.getElementById("label").innerText = `${res[2] * 100}% ${res[1]}`;
-    }, INTERVAL);
-  });
 }
-
 
 
 function flip() {
@@ -61,9 +61,18 @@ function flip() {
     constraints.video.facingMode = "user";
     document.getElementById("webcam").className = "webcam-front";
   }
-  init();
+  start_cam();
+
 }
 
+
+
+function callToPredict(model) {
+  setInterval(async () => {
+    const res = predict(model, video);
+    document.getElementById("label").innerText = `${res[2] * 100}% ${res[1]}`;
+  }, INTERVAL);
+}
 
 
 function predict(model, image) {
@@ -80,7 +89,6 @@ function predict(model, image) {
   console.log(result);
   return showResult(result);
 }
-
 
 
 function showResult(arr) {
