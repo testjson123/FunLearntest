@@ -18,8 +18,19 @@ init();
 
 async function init() {
   if ("mediaDevices" in navigator && "getUserMedia" in navigator.mediaDevices) {
+
+
+    navigator.mediaDevices.enumerateDevices()
+      .then(function (devices) {
+        //console.log(devices)
+        const videoDevices = devices.filter(device => device.kind === 'videoinput')
+        document.getElementById("label").innerText = videoDevices.length;
+      })
+
+
+
     videoStream = await navigator.mediaDevices.getUserMedia(constraints);
-    document.getElementById("label").innerText = videoStream.getVideoTracks().length;
+
     if (videoStream.getVideoTracks().length > 1) {
       //document.getElementById("label").innerText = videoStream.getVideoTracks().length;
       constraints.video.facingMode = "environment";
