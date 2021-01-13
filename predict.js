@@ -13,7 +13,7 @@ let constraints = {
 
 const IMG_SIZE = 80;
 const INTERVAL = 500;
-////////////////----------------------
+////////////////--------------------------------------
 
 let videoStream;
 let canvas = document.getElementById("canvas");
@@ -21,6 +21,7 @@ let video = document.getElementById("webcam");
 const snapSoundElement = document.getElementById("snapSound");
 
 init();
+
 
 async function init() {
   //--Load model
@@ -42,10 +43,11 @@ async function init() {
     setInterval(async () => {
       const res = predict(model, video);
       document.getElementById("label").innerText = `${res[2] * 100}% ${res[1]}`;
-      //console.log(webcam.facingMode);
     }, INTERVAL);
   });
 }
+
+
 
 function flip() {
   videoStream.getTracks().forEach((track) => {
@@ -80,6 +82,7 @@ function predict(model, image) {
 }
 
 
+
 function showResult(arr) {
   if (arr.length === 0) {
     return -1;
@@ -101,6 +104,9 @@ function showResult(arr) {
 
 
 
+
+//---------------------------------------------------------------------------------
+//(not needed)
 /**
  * check num of video devices
  * */
@@ -111,4 +117,4 @@ function showResult(arr) {
 //       const videoDevices = devices.filter(device => device.kind === 'videoinput')
 //       document.getElementById("label").innerText = videoDevices.length;
 //     })
-// }  // (not needed)
+// }
