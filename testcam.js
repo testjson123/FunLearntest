@@ -1,6 +1,6 @@
 let constraints = {
   video: {
-    facingMode: "user",
+    facingMode: "environment",
     width: {
       ideal: 640,
     },
@@ -17,25 +17,9 @@ let video = document.getElementById("webcam");
 init();
 
 async function init() {
+  //--Initialize Webcam
   if ("mediaDevices" in navigator && "getUserMedia" in navigator.mediaDevices) {
-
-
-    navigator.mediaDevices.enumerateDevices()
-      .then(function (devices) {
-        //console.log(devices)
-        const videoDevices = devices.filter(device => device.kind === 'videoinput')
-        document.getElementById("label").innerText = videoDevices.length;
-      })
-
-
-
     videoStream = await navigator.mediaDevices.getUserMedia(constraints);
-
-    if (videoStream.getVideoTracks().length > 1) {
-      //document.getElementById("label").innerText = videoStream.getVideoTracks().length;
-      constraints.video.facingMode = "environment";
-      document.getElementById("webcam").className = "webcam-rear";
-    }
     let video = document.querySelector("#webcam");
     video.srcObject = videoStream;
   }
@@ -56,6 +40,20 @@ function flip() {
   init();
 }
 
-function getvideomode() {
-  console.log(constraints.video.facingMode);
-}
+
+
+
+
+
+
+/**
+ * check num of video devices
+ * */
+// function input_devices() {
+//   navigator.mediaDevices.enumerateDevices()
+//     .then(function (devices) {
+//       //console.log(devices)
+//       const videoDevices = devices.filter(device => device.kind === 'videoinput')
+//       document.getElementById("label").innerText = videoDevices.length;
+//     })
+// }  // (not needed)
