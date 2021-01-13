@@ -1,37 +1,68 @@
-////////////////
+let constraints = {
+  video: {
+    facingMode: "environment",
+    width: {
+      ideal: 640,
+    },
+    height: {
+      ideal: 400,
+    }
+  },
+};
+
+
 const IMG_SIZE = 80;
 const INTERVAL = 500;
+////////////////----------------------
 
-const webcamElement = document.getElementById("webcam");
-const canvasElement = document.getElementById("canvas");
+let videoStream;
+let canvas = document.getElementById("canvas");
+let video = document.getElementById("webcam");
 const snapSoundElement = document.getElementById("snapSound");
-const flip = document.getElementById("btn-flip");
-let facingMode = "user";
-let webcam = start_webcam(
-  webcamElement,
-  canvasElement,
-  snapSoundElement,
-  facingMode
-);
-_init_();
 
-async function _init_() {
+init();
+
+async function init() {
   //--Load model
   const model = await tf.loadLayersModel(
-    "https://raw.githubusercontent.com/testjson123/tfjs/master/saved%20models/animals/model.json"
+    "https://raw.githubusercontent.com/testjson123/FunLearntest/main/model/savedModels/tfjs/animals/model.json"
   );
   console.log("model loaded");
   //----------------------------------------
 
+  //--Initialize Webcam
+  if ("mediaDevices" in navigator && "getUserMedia" in navigator.mediaDevices) {
+    videoStream = await navigator.mediaDevices.getUserMedia(constraints);
+    let video = document.querySelector("#webcam");
+    video.srcObject = videoStream;
+  }
+
   //--Webcam loop and predict
-  webcamElement.addEventListener("play", () => {
+  video.addEventListener("play", () => {
     setInterval(async () => {
-      //const res = predict(model, webcamElement);
-      //document.getElementById("label").innerText = `${res[2] * 100}% ${res[1]}`;
-      console.log(webcam.facingMode);
+      const res = predict(model, video);
+      document.getElementById("label").innerText = `${res[2] * 100}% ${res[1]}`;
+      //console.log(webcam.facingMode);
     }, INTERVAL);
   });
 }
+
+function flip() {
+  videoStream.getTracks().forEach((track) => {
+    track.stop();
+  });
+  if (constraints.video.facingMode == "user") {
+    constraints.video.facingMode = "environment";
+    document.getElementById("webcam").className = "webcam-rear";
+  }
+  else {
+    constraints.video.facingMode = "user";
+    document.getElementById("webcam").className = "webcam-front";
+  }
+  init();
+}
+
+
 
 function predict(model, image) {
   const tensor = tf.browser
@@ -48,34 +79,7 @@ function predict(model, image) {
   return showResult(result);
 }
 
-function start_webcam(
-  webcamElement,
-  canvasElement,
-  snapSoundElement,
-  facingMode
-) {
-  console.log(`${facingMode} here`);
-  let webcam = new Webcam(
-    webcamElement,
-    facingMode,
-    canvasElement,
-    snapSoundElement
-  );
-  webcam
-    .start()
-    .then((result) => {
-      console.log("webcam started");
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-  return webcam;
-}
 
-/**
- * Get highest probability
- * return max index, class name and probability value
- */
 function showResult(arr) {
   if (arr.length === 0) {
     return -1;
@@ -92,31 +96,19 @@ function showResult(arr) {
   return [maxIndex, CLASS_NAMES[maxIndex], max.toFixed(2)];
 }
 
-/* Get all video input devices info */
-function getVideoInputs() {
-  // let webcamList = [];
-  // mediaDevices.forEach((mediaDevice) => {
-  //   if (mediaDevice.kind === "videoinput") {
-  //     webcamList.push(mediaDevice);
-  //   }
-  // });
-  // if (webcamList.length == 1) {
-  //   facingMode = "user";
-  // }
-  // return webcamList;
-  // webcam.stop();
 
-  // console.log(webcam.selectedDeviceId);
-  // console.log(webcam.facingMode);
-  // webcam.facingMode == "user"
-  //   ? (facingMode = "enviroment")
-  //   : (facingMode = "user");
 
-  // webcam = start_webcam(
-  //   webcamElement,
-  //   canvasElement,
-  //   snapSoundElement,
-  //   facingMode
-  // );
-  webcam.flip();
-}
+
+
+
+/**
+ * check num of video devices
+ * */
+// function input_devices() {
+//   navigator.mediaDevices.enumerateDevices()
+//     .then(function (devices) {
+//       //console.log(devices)
+//       const videoDevices = devices.filter(device => device.kind === 'videoinput')
+//       document.getElementById("label").innerText = videoDevices.length;
+//     })
+// }  // (not needed)
